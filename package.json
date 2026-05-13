@@ -1,0 +1,24 @@
+{
+  "name": "lib-artifact-transforms",
+  "version": "0.1.0",
+  "description": "Shared library for artifact processing, frontmatter parsing, and graph visualization",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": ["lib"],
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "test": "jest",
+    "prepare": "npm run build"
+  },
+  "keywords": ["docusaurus", "artifact", "adr", "openspec", "graph", "mermaid"],
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "mermaid": "^10.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  }
+}
