@@ -6,17 +6,24 @@ export function parseFrontmatter(content: string): ParsedFrontmatter {
   const { data, content: body } = matter(content);
 
   if (Object.keys(data).length > 0) {
+    // Normalize dates back to strings (gray-matter parses them as Date objects)
+    const normalizedData: Record<string, any> = {};
+    for (const [key, value] of Object.entries(data)) {
+      if (value instanceof Date) {
+        normalizedData[key] = value.toISOString().split('T')[0];
+      } else {
+        normalizedData[key] = value;
+      }
+    }
     return {
-      metadata: data,
-      content: body,
+      metadata: normalizedData,
+      content: body.trim(),
     };
   }
 
   // Fallback: check for legacy inline-bullet format in first 30 lines
   const lines = content.split('\n').slice(0, 30);
   const metadata: Record<string, any> = {};
-  const bodyStart = content.indexOf('\n\n');
-  const actualBody = bodyStart > -1 ? content.substring(bodyStart + 2) : content;
 
   for (const line of lines) {
     // Match: - **Status:** value or - Status: value (with optional parenthetical)
@@ -28,7 +35,7 @@ export function parseFrontmatter(content: string): ParsedFrontmatter {
 
   return {
     metadata,
-    content: actualBody,
+    content,
   };
 }
 
